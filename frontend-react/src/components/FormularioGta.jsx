@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { toast } from 'sonner';
+import { API_URL } from '../lib/api';
 
 const FormularioGta = ({ alTerminar }) => {
     const [titulo, setTitulo] = useState('');
@@ -16,7 +17,7 @@ const FormularioGta = ({ alTerminar }) => {
 
         try {
             const config = { headers: { 'Authorization': localStorage.getItem('dr_labone_token') } };
-            await axios.post('http://localhost:8080/api/gta', nuevoRegistro, config);
+            await axios.post(`${API_URL}/api/gta`, nuevoRegistro, config);
             
             toast.success("¡Registro de GTA creado con éxito!");
             

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import axios from 'axios';
+import { API_URL } from '../lib/api';
 
 const container = { hidden: {}, show: { transition: { staggerChildren: 0.1 } } };
 const item = {
@@ -15,7 +16,7 @@ const Museo = () => {
   useEffect(() => { document.title = 'Museo — Dr. Labone'; }, []);
 
   useEffect(() => {
-    axios.get('http://localhost:8080/api/museo')
+    axios.get(`${API_URL}/api/museo`)
       .then(r => setProyectos(r.data))
       .catch(e => console.error(e))
       .finally(() => setCargando(false));

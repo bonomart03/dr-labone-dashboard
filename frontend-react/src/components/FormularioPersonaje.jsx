@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { toast } from 'sonner';
+import { API_URL } from '../lib/api';
 
 const FormularioPersonaje = ({ alTerminar }) => {
     const [nombre, setNombre] = useState('');
@@ -15,7 +16,7 @@ const FormularioPersonaje = ({ alTerminar }) => {
 
         try {
             const config = { headers: { 'Authorization': localStorage.getItem('dr_labone_token') } };
-            await axios.post('http://localhost:8080/api/personajes', nuevoPersonaje, config);
+            await axios.post(`${API_URL}/api/personajes`, nuevoPersonaje, config);
             
             toast.success("¡Personaje creado con éxito en el Multiverso!");
             

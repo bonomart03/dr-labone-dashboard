@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'sonner';
+import { API_URL } from '../lib/api';
 import FormularioPersonaje from '../components/FormularioPersonaje';
 import FormularioMuseo from '../components/FormularioMuseo';
 import FormularioGta from '../components/FormularioGta';
@@ -58,9 +59,9 @@ const TABS = [
 ];
 
 const ENDPOINTS = {
-  multiverso: 'http://localhost:8080/api/personajes',
-  museo: 'http://localhost:8080/api/museo',
-  gta: 'http://localhost:8080/api/gta',
+  multiverso: '${API_URL}/api/personajes',
+  museo: '${API_URL}/api/museo',
+  gta: '${API_URL}/api/gta',
 };
 
 const Admin = () => {
@@ -83,7 +84,7 @@ const Admin = () => {
   useEffect(() => {
     setMostrarFormulario(false);
     if (seccion === 'configuracion') {
-      axios.get('http://localhost:8080/api/configuracion/video')
+      axios.get('${API_URL}/api/configuracion/video')
         .then(res => setVideoUrl(res.data?.url || ''))
         .catch(() => toast.error('Error al cargar configuración.'));
     } else {
@@ -106,7 +107,7 @@ const Admin = () => {
   const guardarVideo = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:8080/api/configuracion/video', { url: videoUrl }, authConfig);
+      await axios.post('${API_URL}/api/configuracion/video', { url: videoUrl }, authConfig);
       toast.success('Video de portada actualizado.');
     } catch {
       toast.error('Error al guardar el video.');

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import axios from 'axios';
+import { API_URL } from '../lib/api';
 
 const container = {
   hidden: {},
@@ -24,17 +25,25 @@ const Multiverso = () => {
   const [cargando, setCargando] = useState(true);
   const [filtro, setFiltro] = useState('Todos');
   const [expandidos, setExpandidos] = useState({});
+  const [reproduciendo, setReproduciendo] = useState(null);
 
   useEffect(() => { document.title = 'Multiverso — Dr. Labone'; }, []);
 
   useEffect(() => {
-    axios.get('http://localhost:8080/api/personajes')
+    axios.get(`${API_URL}/api/personajes`)
       .then(r => setPersonajes(r.data))
       .catch(e => console.error(e))
       .finally(() => setCargando(false));
   }, []);
 
-  const reproducirAudio = (url) => url && new Audio(url).play();
+  const reproducirAudio = (url, id) => {
+    if (!url) return;
+    const audio = new Audio(url);
+    setReproduciendo(id);
+    audio.play();
+    audio.onended = () => setReproduciendo(null);
+    audio.onerror = () => setReproduciendo(null);
+  };
 
   const toggleExpand = (id) =>
     setExpandidos(prev => ({ ...prev, [id]: !prev[id] }));
@@ -204,26 +213,54 @@ const Multiverso = () => {
                   {/* Audio */}
                   {p.audioEasterEggUrl && (
                     <button
-                      onClick={() => reproducirAudio(p.audioEasterEggUrl)}
+                      onClick={() => reproducirAudio(p.audioEasterEggUrl, p.id)}
+                      disabled={reproduciendo === p.id}
                       className="mt-5 w-full py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-[0.2em] transition-all duration-300 flex items-center justify-center gap-2"
                       style={{
-                        background: tc.bg,
-                        border: `1px solid ${tc.border}`,
+                        background: reproduciendo === p.id ? tc.bg.replace('0.12', '0.2') : tc.bg,
+                        border: `1px solid ${reproduciendo === p.id ? tc.border.replace('0.4', '0.7') : tc.border}`,
                         color: tc.text,
+                        boxShadow: reproduciendo === p.id ? `0 0 16px ${tc.bg.replace('0.12', '0.3')}` : 'none',
+                        cursor: reproduciendo === p.id ? 'default' : 'pointer',
                       }}
                       onMouseEnter={e => {
+                        if (reproduciendo === p.id) return;
                         e.currentTarget.style.background = tc.bg.replace('0.12', '0.22');
                         e.currentTarget.style.boxShadow = `0 0 12px ${tc.bg}`;
                       }}
                       onMouseLeave={e => {
+                        if (reproduciendo === p.id) return;
                         e.currentTarget.style.background = tc.bg;
                         e.currentTarget.style.boxShadow = 'none';
                       }}
                     >
-                      <svg viewBox="0 0 24 24" fill="currentColor" className="w-3 h-3">
-                        <path d="M8 5v14l11-7z"/>
-                      </svg>
-                      Easter Egg
+                      {reproduciendo === p.id ? (
+                        <>
+                          {/* Ecualizador animado */}
+                          <span className="flex items-end gap-[3px] h-3">
+                            {[1, 3, 2, 4, 2].map((h, i) => (
+                              <span
+                                key={i}
+                                className="w-[3px] rounded-full animate-bounce"
+                                style={{
+                                  height: `${h * 3}px`,
+                                  background: tc.text,
+                                  animationDelay: `${i * 0.1}s`,
+                                  animationDuration: '0.6s',
+                                }}
+                              />
+                            ))}
+                          </span>
+                          Reproduciendo...
+                        </>
+                      ) : (
+                        <>
+                          <svg viewBox="0 0 24 24" fill="currentColor" className="w-3 h-3">
+                            <path d="M8 5v14l11-7z"/>
+                          </svg>
+                          Easter Egg
+                        </>
+                      )}
                     </button>
                   )}
                 </motion.div>

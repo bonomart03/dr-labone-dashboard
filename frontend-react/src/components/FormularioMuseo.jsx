@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { toast } from 'sonner';
+import { API_URL } from '../lib/api';
 
 const FormularioMuseo = ({ alTerminar }) => {
     const [nombre, setNombre] = useState('');
@@ -15,7 +16,7 @@ const FormularioMuseo = ({ alTerminar }) => {
 
         try {
             const config = { headers: { 'Authorization': localStorage.getItem('dr_labone_token') } };
-            await axios.post('http://localhost:8080/api/museo', nuevaRestauracion, config);
+            await axios.post(`${API_URL}/api/museo`, nuevaRestauracion, config);
             
             toast.success("¡Proyecto del Museo guardado con éxito!");
             

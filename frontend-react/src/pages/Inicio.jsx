@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import axios from 'axios';
+import { API_URL } from '../lib/api';
 
 const PORTALES = [
   {
@@ -68,7 +69,7 @@ const Inicio = () => {
   useEffect(() => { document.title = 'Dr. Labone'; }, []);
 
   useEffect(() => {
-    axios.get('http://localhost:8080/api/configuracion/video')
+    axios.get(`${API_URL}/api/configuracion/video`)
       .then(res => { if (res.data?.url) setVideoUrl(res.data.url); })
       .catch(() => setVideoUrl('https://www.youtube.com/embed/CXZ4RX11kAY'));
   }, []);
@@ -83,38 +84,65 @@ const Inicio = () => {
         transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
         className="text-center pt-14 pb-10 px-4 flex flex-col items-center"
       >
+        {/* Dr. */}
         <motion.p
-          initial={{ opacity: 0, letterSpacing: '0.8em' }}
-          animate={{ opacity: 1, letterSpacing: '0.5em' }}
-          transition={{ duration: 1, delay: 0.1 }}
-          className="text-[10px] font-black uppercase mb-4"
-          style={{ color: 'rgba(251,191,36,0.45)' }}
-        >
-          Acceso Autorizado
-        </motion.p>
-
-        <h1
-          className="text-4xl md:text-6xl lg:text-7xl font-black uppercase leading-none mb-6"
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.05 }}
           style={{
-            background: 'linear-gradient(180deg, #FEF3C7 0%, #FBBF24 40%, #D97706 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            letterSpacing: '0.08em',
-            filter: 'drop-shadow(0 0 30px rgba(251,191,36,0.25))',
+            fontFamily: "'Playfair Display', serif",
+            fontSize: 'clamp(20px, 3.5vw, 32px)',
+            fontWeight: 700,
+            fontStyle: 'italic',
+            color: 'rgba(251,191,36,0.5)',
+            letterSpacing: '0.12em',
+            lineHeight: 1,
+            marginBottom: '4px',
           }}
         >
-          Dr. Labone
-        </h1>
+          Dr.
+        </motion.p>
 
-        <div className="flex items-center gap-5 mb-5">
+        {/* Labone */}
+        <motion.h1
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.12, ease: [0.25, 0.1, 0.25, 1] }}
+          style={{
+            fontFamily: "'Playfair Display', serif",
+            fontSize: 'clamp(52px, 10vw, 100px)',
+            fontWeight: 900,
+            fontStyle: 'italic',
+            color: '#FBBF24',
+            letterSpacing: '0.04em',
+            lineHeight: 1,
+            textShadow: '0 0 60px rgba(251,191,36,0.25), 0 0 20px rgba(251,191,36,0.15)',
+          }}
+        >
+          Labone
+        </motion.h1>
+
+        {/* Divisor */}
+        <motion.div
+          initial={{ opacity: 0, scaleX: 0 }}
+          animate={{ opacity: 1, scaleX: 1 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="flex items-center gap-5 mt-6 mb-5"
+        >
           <div className="h-[1px] w-20 bg-gradient-to-r from-transparent to-yellow-500/30" />
-          <div className="w-1.5 h-1.5 rounded-full bg-yellow-500/50" />
+          <div className="w-1 h-1 rounded-full bg-yellow-500/50" />
           <div className="h-[1px] w-20 bg-gradient-to-l from-transparent to-yellow-500/30" />
-        </div>
+        </motion.div>
 
-        <p className="text-zinc-500 text-sm max-w-lg font-light leading-relaxed tracking-wide">
-          Explorá los archivos clasificados, el registro histórico y las realidades alternativas de la base de datos central.
-        </p>
+        {/* Tagline */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="text-zinc-600 text-xs max-w-xs font-light leading-relaxed tracking-[0.3em] uppercase"
+        >
+          El laboratorio del contenido
+        </motion.p>
       </motion.div>
 
       {/* ── VIDEO ── */}
@@ -125,7 +153,7 @@ const Inicio = () => {
         className="px-4 md:px-8 mb-20"
       >
         <div
-          className="group relative w-full max-w-5xl mx-auto aspect-video rounded-2xl overflow-hidden flex items-center justify-center"
+          className="group relative w-full max-w-3xl mx-auto aspect-video rounded-2xl overflow-hidden flex items-center justify-center"
           style={{
             background: 'rgba(18,18,24,0.8)',
             border: '1px solid rgba(255,255,255,0.07)',

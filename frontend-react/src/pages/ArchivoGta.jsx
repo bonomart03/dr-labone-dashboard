@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import axios from 'axios';
+import { API_URL } from '../lib/api';
 
 const container = { hidden: {}, show: { transition: { staggerChildren: 0.08 } } };
 const item = {
@@ -25,7 +26,7 @@ const ArchivoGta = () => {
   useEffect(() => { document.title = 'Archivo GTA — Dr. Labone'; }, []);
 
   useEffect(() => {
-    axios.get('http://localhost:8080/api/gta')
+    axios.get(`${API_URL}/api/gta`)
       .then(r => setRegistros(r.data.filter(x => x.publicado)))
       .catch(e => console.error(e))
       .finally(() => setCargando(false));
