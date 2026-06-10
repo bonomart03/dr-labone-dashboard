@@ -74,6 +74,8 @@ const Admin = () => {
   const token = localStorage.getItem('dr_labone_token');
   const authConfig = { headers: { Authorization: token } };
 
+  useEffect(() => { document.title = 'Admin — Dr. Labone'; }, []);
+
   useEffect(() => {
     if (!token) navigate('/login');
   }, [token, navigate]);

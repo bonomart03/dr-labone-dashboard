@@ -12,6 +12,8 @@ const Museo = () => {
   const [proyectos, setProyectos] = useState([]);
   const [cargando, setCargando] = useState(true);
 
+  useEffect(() => { document.title = 'Museo — Dr. Labone'; }, []);
+
   useEffect(() => {
     axios.get('http://localhost:8080/api/museo')
       .then(r => setProyectos(r.data))

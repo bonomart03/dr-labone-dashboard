@@ -22,6 +22,8 @@ const ArchivoGta = () => {
   const [cargando, setCargando] = useState(true);
   const [filtro, setFiltro] = useState('Todos');
 
+  useEffect(() => { document.title = 'Archivo GTA — Dr. Labone'; }, []);
+
   useEffect(() => {
     axios.get('http://localhost:8080/api/gta')
       .then(r => setRegistros(r.data.filter(x => x.publicado)))

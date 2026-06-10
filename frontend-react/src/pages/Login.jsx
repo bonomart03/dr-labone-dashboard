@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner'; // <-- IMPORTAMOS LA HERRAMIENTA ACÁ
 
@@ -6,6 +6,8 @@ const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+
+  useEffect(() => { document.title = 'Acceso Clasificado — Dr. Labone'; }, []);
 
   const handleLogin = (e) => {
     e.preventDefault();

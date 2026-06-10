@@ -25,6 +25,8 @@ const Multiverso = () => {
   const [filtro, setFiltro] = useState('Todos');
   const [expandidos, setExpandidos] = useState({});
 
+  useEffect(() => { document.title = 'Multiverso — Dr. Labone'; }, []);
+
   useEffect(() => {
     axios.get('http://localhost:8080/api/personajes')
       .then(r => setPersonajes(r.data))

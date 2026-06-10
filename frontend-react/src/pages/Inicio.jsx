@@ -65,6 +65,8 @@ const PORTALES = [
 const Inicio = () => {
   const [videoUrl, setVideoUrl] = useState('');
 
+  useEffect(() => { document.title = 'Dr. Labone'; }, []);
+
   useEffect(() => {
     axios.get('http://localhost:8080/api/configuracion/video')
       .then(res => { if (res.data?.url) setVideoUrl(res.data.url); })
