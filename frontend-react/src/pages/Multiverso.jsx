@@ -132,137 +132,147 @@ const Multiverso = () => {
         {!cargando && visibles.length > 0 && (
           <motion.div
             variants={container} initial="hidden" animate="show"
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-7xl mx-auto"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto"
           >
-            {visibles.map((p) => {
+            {visibles.map((p, index) => {
               const tc = TIPO_COLOR[p.tipo] || TIPO_COLOR.TRIBUTO;
               const expandido = expandidos[p.id];
-              const descripcionLarga = p.descripcion?.length > 120;
+              const descripcionLarga = p.descripcion?.length > 110;
 
               return (
                 <motion.div
                   key={p.id}
                   variants={item}
-                  className="group relative flex flex-col items-center text-center rounded-2xl p-6 overflow-hidden"
+                  className="group relative flex flex-col rounded-2xl overflow-hidden"
                   style={{
-                    background: 'rgba(24,24,27,0.6)',
-                    backdropFilter: 'blur(12px)',
-                    border: '1px solid rgba(255,255,255,0.06)',
-                    boxShadow: '0 4px 20px rgba(0,0,0,0.4)',
+                    background: 'rgba(13,13,18,0.95)',
+                    border: '1px solid rgba(255,255,255,0.07)',
+                    boxShadow: '0 4px 24px rgba(0,0,0,0.5)',
+                    transition: 'all 0.4s cubic-bezier(0.25, 0.1, 0.25, 1)',
                   }}
                   onMouseEnter={e => {
-                    e.currentTarget.style.transform = 'translateY(-6px) scale(1.01)';
+                    e.currentTarget.style.transform = 'translateY(-6px)';
                     e.currentTarget.style.borderColor = tc.border;
-                    e.currentTarget.style.boxShadow = `0 20px 40px rgba(0,0,0,0.5), 0 0 30px ${tc.bg}`;
+                    e.currentTarget.style.boxShadow = `0 24px 50px rgba(0,0,0,0.6), 0 0 40px ${tc.bg.replace('0.12','0.18')}`;
                   }}
                   onMouseLeave={e => {
-                    e.currentTarget.style.transform = 'translateY(0) scale(1)';
-                    e.currentTarget.style.borderColor = 'rgba(255,255,255,0.06)';
-                    e.currentTarget.style.boxShadow = '0 4px 20px rgba(0,0,0,0.4)';
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.borderColor = 'rgba(255,255,255,0.07)';
+                    e.currentTarget.style.boxShadow = '0 4px 24px rgba(0,0,0,0.5)';
                   }}
                 >
-                  {/* Top glow line */}
-                  <div className="absolute top-0 left-0 w-full h-[1px] opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                    style={{ background: `linear-gradient(90deg, transparent, ${tc.text}, transparent)` }} />
+                  {/* ── IMAGEN ── */}
+                  <div className="relative h-56 overflow-hidden flex-shrink-0">
 
-                  {/* Imagen */}
-                  <div className="relative mb-6 mt-1">
-                    <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                      style={{ background: tc.bg, filter: 'blur(16px)', transform: 'scale(1.2)' }} />
+                    {/* Foto del personaje */}
                     <img
-                      src={p.imagenUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(p.nombre)}&background=18181b&color=a1a1aa&size=200&bold=true`}
+                      src={p.imagenUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(p.nombre)}&background=0d0d12&color=52525b&size=400&bold=true&font-size=0.4`}
                       alt={p.nombre}
-                      className="relative w-24 h-24 rounded-full object-cover object-top z-10 transition-all duration-500 group-hover:scale-105"
-                      style={{ border: `2px solid rgba(255,255,255,0.08)` }}
-                      onMouseEnter={e => { e.currentTarget.style.borderColor = tc.border; }}
-                      onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)'; }}
+                      className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
                     />
+
+                    {/* Gradiente inferior — funde imagen con el card */}
+                    <div className="absolute inset-0"
+                      style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(13,13,18,0.5) 50%, rgba(13,13,18,0.97) 100%)' }} />
+
+                    {/* Línea de color superior */}
+                    <div className="absolute top-0 left-0 w-full h-[2px] transition-opacity duration-500 opacity-60 group-hover:opacity-100"
+                      style={{ background: `linear-gradient(90deg, transparent, ${tc.text}, transparent)` }} />
+
+                    {/* Número de registro */}
+                    <span className="absolute top-3.5 left-4 text-[10px] font-black tracking-[0.3em] z-10"
+                      style={{ color: 'rgba(255,255,255,0.2)' }}>
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
+
+                    {/* Badge de tipo */}
                     <span
-                      className="absolute -bottom-2.5 left-1/2 -translate-x-1/2 text-[9px] font-black uppercase px-3 py-1 rounded-full tracking-widest z-20 whitespace-nowrap"
-                      style={{ background: 'rgba(10,10,15,0.95)', border: `1px solid ${tc.border}`, color: tc.text }}
+                      className="absolute top-3 right-3 text-[9px] font-black uppercase px-2.5 py-1 rounded-full tracking-widest z-10"
+                      style={{ background: 'rgba(5,5,8,0.85)', border: `1px solid ${tc.border}`, color: tc.text, backdropFilter: 'blur(8px)' }}
                     >
                       {p.tipo}
                     </span>
+
+                    {/* Nombre sobre la imagen (parte baja) */}
+                    <div className="absolute bottom-0 left-0 right-0 px-5 pb-4 z-10">
+                      <h3 className="text-xl font-black text-white leading-tight tracking-wide transition-colors duration-300 group-hover:text-yellow-300"
+                        style={{ textShadow: '0 2px 12px rgba(0,0,0,0.8)' }}>
+                        {p.nombre}
+                      </h3>
+                      {/* Línea de acento bajo el nombre */}
+                      <div className="mt-1.5 h-[1px] w-8 transition-all duration-500 group-hover:w-16"
+                        style={{ background: `linear-gradient(90deg, ${tc.text}, transparent)` }} />
+                    </div>
                   </div>
 
-                  {/* Nombre */}
-                  <h3 className="text-base font-extrabold text-zinc-100 mt-1 mb-2 tracking-wide transition-colors duration-300 group-hover:text-yellow-400 leading-tight">
-                    {p.nombre}
-                  </h3>
+                  {/* ── CONTENIDO ── */}
+                  <div className="flex flex-col flex-grow px-5 py-4">
 
-                  {/* Descripción con expand */}
-                  <div className="flex-grow w-full">
-                    <p className="text-zinc-500 text-xs leading-relaxed font-light">
-                      {descripcionLarga && !expandido
-                        ? p.descripcion.slice(0, 120) + '…'
-                        : p.descripcion}
-                    </p>
-                    {descripcionLarga && (
+                    {/* Descripción */}
+                    <div className="flex-grow">
+                      <p className="text-zinc-500 text-xs leading-relaxed font-light">
+                        {descripcionLarga && !expandido
+                          ? p.descripcion.slice(0, 110) + '…'
+                          : p.descripcion}
+                      </p>
+                      {descripcionLarga && (
+                        <button
+                          onClick={() => toggleExpand(p.id)}
+                          className="text-[10px] font-bold uppercase tracking-widest mt-2 transition-colors duration-200"
+                          style={{ color: tc.text + '70' }}
+                          onMouseEnter={e => { e.currentTarget.style.color = tc.text; }}
+                          onMouseLeave={e => { e.currentTarget.style.color = tc.text + '70'; }}
+                        >
+                          {expandido ? 'Ver menos ↑' : 'Ver más ↓'}
+                        </button>
+                      )}
+                    </div>
+
+                    {/* Audio Easter Egg */}
+                    {p.audioEasterEggUrl && (
                       <button
-                        onClick={() => toggleExpand(p.id)}
-                        className="text-[10px] font-bold uppercase tracking-widest mt-2 transition-colors duration-200"
-                        style={{ color: tc.text + '80' }}
-                        onMouseEnter={e => { e.currentTarget.style.color = tc.text; }}
-                        onMouseLeave={e => { e.currentTarget.style.color = tc.text + '80'; }}
+                        onClick={() => reproducirAudio(p.audioEasterEggUrl, p.id)}
+                        disabled={reproduciendo === p.id}
+                        className="mt-4 w-full py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-[0.2em] transition-all duration-300 flex items-center justify-center gap-2"
+                        style={{
+                          background: reproduciendo === p.id ? tc.bg.replace('0.12', '0.22') : tc.bg,
+                          border: `1px solid ${reproduciendo === p.id ? tc.border.replace('0.4', '0.8') : tc.border}`,
+                          color: tc.text,
+                          boxShadow: reproduciendo === p.id ? `0 0 18px ${tc.bg.replace('0.12', '0.35')}` : 'none',
+                          cursor: reproduciendo === p.id ? 'default' : 'pointer',
+                        }}
+                        onMouseEnter={e => {
+                          if (reproduciendo === p.id) return;
+                          e.currentTarget.style.background = tc.bg.replace('0.12', '0.22');
+                          e.currentTarget.style.boxShadow = `0 0 14px ${tc.bg}`;
+                        }}
+                        onMouseLeave={e => {
+                          if (reproduciendo === p.id) return;
+                          e.currentTarget.style.background = tc.bg;
+                          e.currentTarget.style.boxShadow = 'none';
+                        }}
                       >
-                        {expandido ? 'Ver menos ↑' : 'Ver más ↓'}
+                        {reproduciendo === p.id ? (
+                          <>
+                            <span className="flex items-end gap-[3px] h-3">
+                              {[1, 3, 2, 4, 2].map((h, i) => (
+                                <span key={i} className="w-[3px] rounded-full animate-bounce"
+                                  style={{ height: `${h * 3}px`, background: tc.text, animationDelay: `${i * 0.1}s`, animationDuration: '0.6s' }} />
+                              ))}
+                            </span>
+                            Reproduciendo...
+                          </>
+                        ) : (
+                          <>
+                            <svg viewBox="0 0 24 24" fill="currentColor" className="w-3 h-3">
+                              <path d="M8 5v14l11-7z"/>
+                            </svg>
+                            Easter Egg
+                          </>
+                        )}
                       </button>
                     )}
                   </div>
-
-                  {/* Audio */}
-                  {p.audioEasterEggUrl && (
-                    <button
-                      onClick={() => reproducirAudio(p.audioEasterEggUrl, p.id)}
-                      disabled={reproduciendo === p.id}
-                      className="mt-5 w-full py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-[0.2em] transition-all duration-300 flex items-center justify-center gap-2"
-                      style={{
-                        background: reproduciendo === p.id ? tc.bg.replace('0.12', '0.2') : tc.bg,
-                        border: `1px solid ${reproduciendo === p.id ? tc.border.replace('0.4', '0.7') : tc.border}`,
-                        color: tc.text,
-                        boxShadow: reproduciendo === p.id ? `0 0 16px ${tc.bg.replace('0.12', '0.3')}` : 'none',
-                        cursor: reproduciendo === p.id ? 'default' : 'pointer',
-                      }}
-                      onMouseEnter={e => {
-                        if (reproduciendo === p.id) return;
-                        e.currentTarget.style.background = tc.bg.replace('0.12', '0.22');
-                        e.currentTarget.style.boxShadow = `0 0 12px ${tc.bg}`;
-                      }}
-                      onMouseLeave={e => {
-                        if (reproduciendo === p.id) return;
-                        e.currentTarget.style.background = tc.bg;
-                        e.currentTarget.style.boxShadow = 'none';
-                      }}
-                    >
-                      {reproduciendo === p.id ? (
-                        <>
-                          {/* Ecualizador animado */}
-                          <span className="flex items-end gap-[3px] h-3">
-                            {[1, 3, 2, 4, 2].map((h, i) => (
-                              <span
-                                key={i}
-                                className="w-[3px] rounded-full animate-bounce"
-                                style={{
-                                  height: `${h * 3}px`,
-                                  background: tc.text,
-                                  animationDelay: `${i * 0.1}s`,
-                                  animationDuration: '0.6s',
-                                }}
-                              />
-                            ))}
-                          </span>
-                          Reproduciendo...
-                        </>
-                      ) : (
-                        <>
-                          <svg viewBox="0 0 24 24" fill="currentColor" className="w-3 h-3">
-                            <path d="M8 5v14l11-7z"/>
-                          </svg>
-                          Easter Egg
-                        </>
-                      )}
-                    </button>
-                  )}
                 </motion.div>
               );
             })}
