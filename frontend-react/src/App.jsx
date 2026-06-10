@@ -2,6 +2,7 @@ import { useLocation, BrowserRouter as Router, Routes, Route } from 'react-route
 import { AnimatePresence, motion } from 'framer-motion';
 import { Toaster } from 'sonner';
 import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 import GoldenBackground from './components/GoldenBackground';
 import Multiverso from './pages/Multiverso';
 import Museo from './pages/Museo';
@@ -52,9 +53,12 @@ function App() {
         <Toaster richColors position="top-right" />
 
         {/* z-index > 0 para estar sobre el canvas */}
-        <div style={{ position: 'relative', zIndex: 1 }}>
+        <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
           <Navbar />
-          <AnimatedRoutes />
+          <main style={{ flex: 1 }}>
+            <AnimatedRoutes />
+          </main>
+          <Footer />
         </div>
 
       </div>
