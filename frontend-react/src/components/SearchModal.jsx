@@ -8,7 +8,7 @@ import { API_URL } from '../lib/api';
 const SECCIONES = [
   {
     key: 'personajes',
-    url: '${API_URL}/api/personajes',
+    url: `${API_URL}/api/personajes`,
     to: '/multiverso',
     label: 'Multiverso',
     color: '#8B5CF6',
@@ -21,7 +21,7 @@ const SECCIONES = [
   },
   {
     key: 'gta',
-    url: '${API_URL}/api/gta',
+    url: `${API_URL}/api/gta`,
     to: '/archivo-gta',
     label: 'Archivo GTA',
     color: '#3B82F6',
@@ -35,7 +35,7 @@ const SECCIONES = [
   },
   {
     key: 'museo',
-    url: '${API_URL}/api/museo',
+    url: `${API_URL}/api/museo`,
     to: '/museo',
     label: 'Museo',
     color: '#14B8A6',

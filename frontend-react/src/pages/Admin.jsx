@@ -59,9 +59,9 @@ const TABS = [
 ];
 
 const ENDPOINTS = {
-  multiverso: '${API_URL}/api/personajes',
-  museo: '${API_URL}/api/museo',
-  gta: '${API_URL}/api/gta',
+  multiverso: `${API_URL}/api/personajes`,
+  museo: `${API_URL}/api/museo`,
+  gta: `${API_URL}/api/gta`,
 };
 
 const Admin = () => {
@@ -84,7 +84,7 @@ const Admin = () => {
   useEffect(() => {
     setMostrarFormulario(false);
     if (seccion === 'configuracion') {
-      axios.get('${API_URL}/api/configuracion/video')
+      axios.get(`${API_URL}/api/configuracion/video`)
         .then(res => setVideoUrl(res.data?.url || ''))
         .catch(() => toast.error('Error al cargar configuración.'));
     } else {
@@ -107,7 +107,7 @@ const Admin = () => {
   const guardarVideo = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('${API_URL}/api/configuracion/video', { url: videoUrl }, authConfig);
+      await axios.post(`${API_URL}/api/configuracion/video`, { url: videoUrl }, authConfig);
       toast.success('Video de portada actualizado.');
     } catch {
       toast.error('Error al guardar el video.');
