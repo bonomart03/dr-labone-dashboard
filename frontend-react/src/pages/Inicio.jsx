@@ -63,6 +63,19 @@ const PORTALES = [
   },
 ];
 
+const toEmbedUrl = (url) => {
+  if (!url) return '';
+  // ya es embed
+  if (url.includes('youtube.com/embed/')) return url;
+  // youtu.be/ID
+  const short = url.match(/youtu\.be\/([^?&]+)/);
+  if (short) return `https://www.youtube.com/embed/${short[1]}`;
+  // youtube.com/watch?v=ID
+  const watch = url.match(/[?&]v=([^?&]+)/);
+  if (watch) return `https://www.youtube.com/embed/${watch[1]}`;
+  return url;
+};
+
 const Inicio = () => {
   const [videoUrl, setVideoUrl] = useState('');
 
@@ -70,7 +83,7 @@ const Inicio = () => {
 
   useEffect(() => {
     axios.get(`${API_URL}/api/configuracion/video`)
-      .then(res => { if (res.data?.url) setVideoUrl(res.data.url); })
+      .then(res => { if (res.data?.url) setVideoUrl(toEmbedUrl(res.data.url)); })
       .catch(() => setVideoUrl('https://www.youtube.com/embed/CXZ4RX11kAY'));
   }, []);
 
