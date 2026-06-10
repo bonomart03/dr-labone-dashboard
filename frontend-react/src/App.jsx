@@ -10,6 +10,7 @@ import Inicio from './pages/Inicio';
 import Admin from './pages/Admin';
 import ArchivoGta from './pages/ArchivoGta';
 import Login from './pages/Login';
+import NotFound from './pages/NotFound';
 
 const pageVariants = {
   initial: { opacity: 0, y: 16 },
@@ -36,6 +37,7 @@ const AnimatedRoutes = () => {
           <Route path="/museo"       element={<Museo />} />
           <Route path="/admin"       element={<Admin />} />
           <Route path="/login"       element={<Login />} />
+          <Route path="*"            element={<NotFound />} />
         </Routes>
       </motion.div>
     </AnimatePresence>
