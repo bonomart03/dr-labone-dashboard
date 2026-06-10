@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import logoImg from '../assets/logo.jpeg';
+import SearchModal from './SearchModal';
 
 const YOUTUBE_URL = 'https://www.youtube.com/@Dr.LaboneOficial';
 
@@ -25,8 +26,15 @@ const IconLock = () => (
   </svg>
 );
 
+const IconSearch = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
+    <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+  </svg>
+);
+
 const Navbar = () => {
   const [menuAbierto, setMenuAbierto] = useState(false);
+  const [searchAbierto, setSearchAbierto] = useState(false);
 
   return (
     <nav className="sticky top-0 z-50 bg-zinc-950/80 backdrop-blur-md border-b border-zinc-800/60 shadow-[0_1px_0_rgba(234,179,8,0.08)]">
@@ -67,8 +75,17 @@ const Navbar = () => {
           ))}
         </div>
 
-        {/* Derecha: YouTube + admin + hamburger */}
+        {/* Derecha: buscar + YouTube + admin + hamburger */}
         <div className="flex items-center gap-1">
+
+          {/* Buscar */}
+          <button
+            onClick={() => setSearchAbierto(true)}
+            title="Buscar"
+            className="p-2 rounded-full transition-all duration-300 text-zinc-600 hover:text-yellow-400 hover:bg-zinc-800/60"
+          >
+            <IconSearch />
+          </button>
 
           {/* YouTube */}
           <a
@@ -108,6 +125,11 @@ const Navbar = () => {
           </button>
         </div>
       </div>
+
+      {/* Search modal */}
+      <AnimatePresence>
+        {searchAbierto && <SearchModal onClose={() => setSearchAbierto(false)} />}
+      </AnimatePresence>
 
       {/* Menú mobile animado */}
       <AnimatePresence>
