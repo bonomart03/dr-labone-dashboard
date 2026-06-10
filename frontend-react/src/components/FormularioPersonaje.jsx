@@ -31,7 +31,7 @@ const FormularioPersonaje = ({ alTerminar }) => {
     return (
         <div style={{ backgroundColor: '#111', padding: '1.5rem', borderRadius: '8px', marginBottom: '1.5rem', border: '1px solid #444' }}>
             <h3 style={{ color: '#FFD700', marginTop: 0 }}>Añadir Nuevo Personaje</h3>
-            <form onSubmit={handleSubmit} style={{ display: 'grid', gap: '10px', gridTemplateColumns: '1fr 1fr' }}>
+            <form onSubmit={handleSubmit} className="grid gap-[10px] grid-cols-1 sm:grid-cols-2">
                 <input type="text" placeholder="Nombre" value={nombre} onChange={(e) => setNombre(e.target.value)} required style={styles.input} />
                 <select value={tipo} onChange={(e) => setTipo(e.target.value)} style={styles.input}>
                     <option value="TRIBUTO">Tributo</option>
@@ -40,8 +40,8 @@ const FormularioPersonaje = ({ alTerminar }) => {
                 </select>
                 <input type="text" placeholder="URL de la Imagen" value={imagenUrl} onChange={(e) => setImagenUrl(e.target.value)} required style={styles.input} />
                 <input type="text" placeholder="URL del Audio (Opcional)" value={audioUrl} onChange={(e) => setAudioUrl(e.target.value)} style={styles.input} />
-                <textarea placeholder="Descripción del personaje..." value={descripcion} onChange={(e) => setDescripcion(e.target.value)} required style={{ ...styles.input, gridColumn: 'span 2', minHeight: '80px' }} />
-                <button type="submit" style={{ ...styles.btnAccion, gridColumn: 'span 2' }}>Guardar Personaje</button>
+                <textarea placeholder="Descripción del personaje..." value={descripcion} onChange={(e) => setDescripcion(e.target.value)} required className="sm:col-span-2" style={{ ...styles.input, minHeight: '80px' }} />
+                <button type="submit" className="sm:col-span-2" style={styles.btnAccion}>Guardar Personaje</button>
             </form>
         </div>
     );

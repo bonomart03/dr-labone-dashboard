@@ -30,8 +30,8 @@ const Footer = () => (
     <div className="w-full h-[1px]"
       style={{ background: 'linear-gradient(90deg, transparent 0%, rgba(251,191,36,0.25) 30%, rgba(251,191,36,0.5) 50%, rgba(251,191,36,0.25) 70%, transparent 100%)' }} />
 
-    <div className="max-w-7xl mx-auto px-6 md:px-10 py-12">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-6">
+    <div className="max-w-7xl mx-auto px-6 md:px-10 py-8 md:py-12">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-6">
 
         {/* Columna 1 — Identidad */}
         <div className="flex flex-col items-center md:items-start gap-4">

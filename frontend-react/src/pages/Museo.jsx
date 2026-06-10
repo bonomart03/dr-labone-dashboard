@@ -80,7 +80,7 @@ const Museo = () => {
         {/* Grid */}
         {!cargando && proyectos.length > 0 && (
           <motion.div variants={container} initial="hidden" animate="show"
-            className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
+            className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-7xl mx-auto">
             {proyectos.map((p, i) => (
               <motion.div
                 key={p.id}
@@ -115,10 +115,10 @@ const Museo = () => {
                 </div>
 
                 {/* Imágenes Antes / Después */}
-                <div className="flex h-56 sm:h-64" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                <div className="flex flex-col xs:flex-row sm:flex-row" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
 
                   {/* Antes */}
-                  <div className="relative w-1/2 overflow-hidden bg-zinc-950">
+                  <div className="relative w-full sm:w-1/2 h-44 sm:h-56 overflow-hidden bg-zinc-950">
                     <img
                       src={p.imagenAntesUrl || 'https://via.placeholder.com/300x300/111111/333333?text=Antes'}
                       alt={`Antes — ${p.nombre}`}
@@ -132,7 +132,7 @@ const Museo = () => {
                   </div>
 
                   {/* Divisor central */}
-                  <div className="relative w-[2px] flex-shrink-0 bg-zinc-800 flex items-center justify-center z-10">
+                  <div className="hidden sm:flex relative w-[2px] flex-shrink-0 bg-zinc-800 items-center justify-center z-10">
                     <div className="w-7 h-7 rounded-full flex items-center justify-center"
                       style={{ background: 'rgba(10,10,15,0.95)', border: '1px solid rgba(234,179,8,0.3)' }}>
                       <svg viewBox="0 0 24 24" fill="none" stroke="#FBBF24" strokeWidth="2" className="w-3.5 h-3.5">
@@ -142,7 +142,7 @@ const Museo = () => {
                   </div>
 
                   {/* Después */}
-                  <div className="relative w-1/2 overflow-hidden bg-zinc-950">
+                  <div className="relative w-full sm:w-1/2 h-44 sm:h-56 overflow-hidden bg-zinc-950">
                     <img
                       src={p.imagenDespuesUrl || 'https://via.placeholder.com/300x300/111111/333333?text=Despu%C3%A9s'}
                       alt={`Después — ${p.nombre}`}

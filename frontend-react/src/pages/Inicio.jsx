@@ -253,7 +253,7 @@ const Inicio = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.5 + i * 0.1, ease: [0.25, 0.1, 0.25, 1] }}
               >
-                <Link to={p.to} className="block group relative h-[360px] md:h-[420px] rounded-2xl overflow-hidden"
+                <Link to={p.to} className="block group relative h-[240px] sm:h-[310px] md:h-[420px] rounded-2xl overflow-hidden"
                   style={{
                     background: '#0d1117',
                     border: `1px solid ${p.border}`,
@@ -277,7 +277,7 @@ const Inicio = () => {
 
                   {/* Número decorativo gigante */}
                   <div
-                    className="absolute -bottom-4 -right-2 text-[160px] font-black leading-none select-none pointer-events-none transition-all duration-500 group-hover:-bottom-2 group-hover:-right-1"
+                    className="absolute -bottom-4 -right-2 text-[90px] md:text-[160px] font-black leading-none select-none pointer-events-none transition-all duration-500 group-hover:-bottom-2 group-hover:-right-1"
                     style={{
                       color: p.tag,
                       opacity: 0.05,
@@ -288,7 +288,7 @@ const Inicio = () => {
                   </div>
 
                   {/* Ícono grande */}
-                  <div className="absolute top-7 right-7 w-14 h-14 transition-all duration-500 opacity-20 group-hover:opacity-50 group-hover:scale-110"
+                  <div className="absolute top-4 right-4 md:top-7 md:right-7 w-10 h-10 md:w-14 md:h-14 transition-all duration-500 opacity-20 group-hover:opacity-50 group-hover:scale-110"
                     style={{ color: p.tag }}>
                     {p.icon}
                   </div>
@@ -298,18 +298,18 @@ const Inicio = () => {
                     style={{ background: `linear-gradient(90deg, transparent, ${p.tag}, transparent)` }} />
 
                   {/* Contenido */}
-                  <div className="absolute inset-0 flex flex-col justify-end p-8">
-                    <p className="text-[9px] font-black uppercase tracking-[0.45em] mb-2 transition-colors duration-300"
+                  <div className="absolute inset-0 flex flex-col justify-end p-5 md:p-8">
+                    <p className="text-[9px] font-black uppercase tracking-[0.45em] mb-1.5 md:mb-2 transition-colors duration-300"
                       style={{ color: `${p.tag}99` }}>
                       {p.num} · {p.sub}
                     </p>
                     <h2
-                      className="text-3xl md:text-4xl font-black uppercase leading-none mb-4 transition-all duration-300"
+                      className="text-2xl sm:text-3xl md:text-4xl font-black uppercase leading-none mb-2 md:mb-4 transition-all duration-300"
                       style={{ color: '#F8FAFC', letterSpacing: '0.06em' }}
                     >
                       {p.titulo}
                     </h2>
-                    <p className="text-sm font-light leading-relaxed mb-6 max-w-xs transition-colors duration-300"
+                    <p className="hidden sm:block text-xs sm:text-sm font-light leading-relaxed mb-4 md:mb-6 max-w-xs transition-colors duration-300"
                       style={{ color: 'rgba(148,163,184,0.75)' }}>
                       {p.desc}
                     </p>

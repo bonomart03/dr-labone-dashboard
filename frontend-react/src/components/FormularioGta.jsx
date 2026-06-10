@@ -32,7 +32,7 @@ const FormularioGta = ({ alTerminar }) => {
     return (
         <div style={{ backgroundColor: '#111', padding: '1.5rem', borderRadius: '8px', marginBottom: '1.5rem', border: '1px solid #444' }}>
             <h3 style={{ color: '#FFD700', marginTop: 0 }}>Añadir al Archivo GTA</h3>
-            <form onSubmit={handleSubmit} style={{ display: 'grid', gap: '10px', gridTemplateColumns: '1fr 1fr' }}>
+            <form onSubmit={handleSubmit} className="grid gap-[10px] grid-cols-1 sm:grid-cols-2">
                 <input type="text" placeholder="Título del Misterio/Easter Egg" value={titulo} onChange={(e) => setTitulo(e.target.value)} required style={styles.input} />
                 <select value={juego} onChange={(e) => setJuego(e.target.value)} style={styles.input}>
                     <option value="GTA San Andreas">GTA San Andreas</option>
@@ -42,9 +42,9 @@ const FormularioGta = ({ alTerminar }) => {
                 </select>
                 <input type="text" placeholder="Categoría (Ej: Easter Egg, Mito)" value={categoria} onChange={(e) => setCategoria(e.target.value)} required style={styles.input} />
                 <input type="text" placeholder="URL de la Imagen (Miniatura)" value={imagenUrl} onChange={(e) => setImagenUrl(e.target.value)} style={styles.input} />
-                <input type="text" placeholder="URL del Video de YouTube (Opcional)" value={videoUrl} onChange={(e) => setVideoUrl(e.target.value)} style={{ ...styles.input, gridColumn: 'span 2' }} />
-                <textarea placeholder="Descripción detallada del hallazgo..." value={descripcion} onChange={(e) => setDescripcion(e.target.value)} required style={{ ...styles.input, gridColumn: 'span 2', minHeight: '80px' }} />
-                <button type="submit" style={{ ...styles.btnAccion, gridColumn: 'span 2' }}>Guardar en Archivo</button>
+                <input type="text" placeholder="URL del Video de YouTube (Opcional)" value={videoUrl} onChange={(e) => setVideoUrl(e.target.value)} className="sm:col-span-2" style={styles.input} />
+                <textarea placeholder="Descripción detallada del hallazgo..." value={descripcion} onChange={(e) => setDescripcion(e.target.value)} required className="sm:col-span-2" style={{ ...styles.input, minHeight: '80px' }} />
+                <button type="submit" className="sm:col-span-2" style={styles.btnAccion}>Guardar en Archivo</button>
             </form>
         </div>
     );
