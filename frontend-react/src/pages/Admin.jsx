@@ -68,6 +68,7 @@ const Admin = () => {
   const navigate = useNavigate();
   const [seccion, setSeccion] = useState('multiverso');
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
+  const [itemEditando, setItemEditando] = useState(null);
   const [items, setItems] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [videoUrl, setVideoUrl] = useState('');
@@ -83,6 +84,7 @@ const Admin = () => {
 
   useEffect(() => {
     setMostrarFormulario(false);
+    setItemEditando(null);
     if (seccion === 'configuracion') {
       axios.get(`${API_URL}/api/configuracion/video`)
         .then(res => setVideoUrl(res.data?.url || ''))
@@ -125,8 +127,15 @@ const Admin = () => {
     }
   };
 
+  const editar = (item) => {
+    setItemEditando(item);
+    setMostrarFormulario(true);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const alTerminar = () => {
     setMostrarFormulario(false);
+    setItemEditando(null);
     cargarItems();
   };
 
@@ -306,11 +315,11 @@ const Admin = () => {
                 {/* Formulario */}
                 {mostrarFormulario && (
                   <div className="px-6 py-5" style={{ borderBottom: '1px solid rgba(248,250,252,0.05)' }}>
-                    {seccion === 'multiverso' && <FormularioPersonaje alTerminar={alTerminar} />}
-                    {seccion === 'museo' && <FormularioMuseo alTerminar={alTerminar} />}
-                    {seccion === 'gta' && <FormularioGta alTerminar={alTerminar} />}
+                    {seccion === 'multiverso' && <FormularioPersonaje alTerminar={alTerminar} itemEditar={itemEditando} />}
+                    {seccion === 'museo' && <FormularioMuseo alTerminar={alTerminar} itemEditar={itemEditando} />}
+                    {seccion === 'gta' && <FormularioGta alTerminar={alTerminar} itemEditar={itemEditando} />}
                     <button
-                      onClick={() => setMostrarFormulario(false)}
+                      onClick={() => { setMostrarFormulario(false); setItemEditando(null); }}
                       className="mt-3 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition-all duration-300"
                       style={{ border: '1px solid rgba(248,250,252,0.08)', color: '#64748B' }}
                     >
@@ -367,23 +376,42 @@ const Admin = () => {
                               <p className="text-slate-200 text-sm font-semibold leading-tight">{titulo}</p>
                               <p className="text-slate-500 text-xs mt-0.5">{sub}</p>
                             </div>
-                            <button
-                              onClick={() => eliminar(item.id)}
-                              className="opacity-0 group-hover:opacity-100 px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all duration-300"
-                              style={{ color: '#64748B', border: '1px solid transparent' }}
-                              onMouseEnter={e => {
-                                e.currentTarget.style.color = '#F87171';
-                                e.currentTarget.style.borderColor = 'rgba(239,68,68,0.35)';
-                                e.currentTarget.style.background = 'rgba(239,68,68,0.08)';
-                              }}
-                              onMouseLeave={e => {
-                                e.currentTarget.style.color = '#64748B';
-                                e.currentTarget.style.borderColor = 'transparent';
-                                e.currentTarget.style.background = 'transparent';
-                              }}
-                            >
-                              Eliminar
-                            </button>
+                            <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                              <button
+                                onClick={() => editar(item)}
+                                className="px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all duration-300"
+                                style={{ color: '#64748B', border: '1px solid transparent' }}
+                                onMouseEnter={e => {
+                                  e.currentTarget.style.color = '#60A5FA';
+                                  e.currentTarget.style.borderColor = 'rgba(59,130,246,0.35)';
+                                  e.currentTarget.style.background = 'rgba(59,130,246,0.08)';
+                                }}
+                                onMouseLeave={e => {
+                                  e.currentTarget.style.color = '#64748B';
+                                  e.currentTarget.style.borderColor = 'transparent';
+                                  e.currentTarget.style.background = 'transparent';
+                                }}
+                              >
+                                Editar
+                              </button>
+                              <button
+                                onClick={() => eliminar(item.id)}
+                                className="px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all duration-300"
+                                style={{ color: '#64748B', border: '1px solid transparent' }}
+                                onMouseEnter={e => {
+                                  e.currentTarget.style.color = '#F87171';
+                                  e.currentTarget.style.borderColor = 'rgba(239,68,68,0.35)';
+                                  e.currentTarget.style.background = 'rgba(239,68,68,0.08)';
+                                }}
+                                onMouseLeave={e => {
+                                  e.currentTarget.style.color = '#64748B';
+                                  e.currentTarget.style.borderColor = 'transparent';
+                                  e.currentTarget.style.background = 'transparent';
+                                }}
+                              >
+                                Eliminar
+                              </button>
+                            </div>
                           </div>
                         );
                       })}
