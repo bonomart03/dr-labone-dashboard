@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { toast } from 'sonner';
 import { API_URL } from '../lib/api';
+import SubirImagen from './SubirImagen';
 
 const FormularioGta = ({ alTerminar }) => {
     const [titulo, setTitulo] = useState('');
@@ -41,7 +42,7 @@ const FormularioGta = ({ alTerminar }) => {
                     <option value="GTA IV">GTA IV</option>
                 </select>
                 <input type="text" placeholder="Categoría (Ej: Easter Egg, Mito)" value={categoria} onChange={(e) => setCategoria(e.target.value)} required style={styles.input} />
-                <input type="text" placeholder="URL de la Imagen (Miniatura)" value={imagenUrl} onChange={(e) => setImagenUrl(e.target.value)} style={styles.input} />
+                <SubirImagen value={imagenUrl} onChange={setImagenUrl} label="Imagen miniatura" />
                 <input type="text" placeholder="URL del Video de YouTube (Opcional)" value={videoUrl} onChange={(e) => setVideoUrl(e.target.value)} className="sm:col-span-2" style={styles.input} />
                 <textarea placeholder="Descripción detallada del hallazgo..." value={descripcion} onChange={(e) => setDescripcion(e.target.value)} required className="sm:col-span-2" style={{ ...styles.input, minHeight: '80px' }} />
                 <button type="submit" className="sm:col-span-2" style={styles.btnAccion}>Guardar en Archivo</button>

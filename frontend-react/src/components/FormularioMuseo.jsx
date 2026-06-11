@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { toast } from 'sonner';
 import { API_URL } from '../lib/api';
+import SubirImagen from './SubirImagen';
 
 const FormularioMuseo = ({ alTerminar }) => {
     const [nombre, setNombre] = useState('');
@@ -34,8 +35,8 @@ const FormularioMuseo = ({ alTerminar }) => {
             <form onSubmit={handleSubmit} className="grid gap-[10px] grid-cols-1 sm:grid-cols-2">
                 <input type="text" placeholder="Nombre del Objeto / Proyecto" value={nombre} onChange={(e) => setNombre(e.target.value)} required style={styles.input} />
                 <input type="number" placeholder="Año del Modelo / Proyecto" value={anio} onChange={(e) => setAnio(e.target.value)} required style={styles.input} />
-                <input type="text" placeholder="URL Imagen: El Antes 📸" value={imagenAntesUrl} onChange={(e) => setImagenAntesUrl(e.target.value)} required style={styles.input} />
-                <input type="text" placeholder="URL Imagen: El Después ✨" value={imagenDespuesUrl} onChange={(e) => setImagenDespuesUrl(e.target.value)} required style={styles.input} />
+                <SubirImagen value={imagenAntesUrl} onChange={setImagenAntesUrl} label="Imagen: Antes 📸" />
+                <SubirImagen value={imagenDespuesUrl} onChange={setImagenDespuesUrl} label="Imagen: Después ✨" />
                 <textarea placeholder="Detalles de la restauración, modificaciones y proceso..." value={descripcion} onChange={(e) => setDescripcion(e.target.value)} required className="sm:col-span-2" style={{ ...styles.input, minHeight: '80px' }} />
                 <button type="submit" className="sm:col-span-2" style={styles.btnAccion}>Guardar en Museo</button>
             </form>

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { toast } from 'sonner';
 import { API_URL } from '../lib/api';
+import SubirImagen from './SubirImagen';
 
 const FormularioPersonaje = ({ alTerminar }) => {
     const [nombre, setNombre] = useState('');
@@ -38,7 +39,7 @@ const FormularioPersonaje = ({ alTerminar }) => {
                     <option value="MASCOTA">Mascota</option>
                     <option value="MUÑECO">Muñeco</option>
                 </select>
-                <input type="text" placeholder="URL de la Imagen" value={imagenUrl} onChange={(e) => setImagenUrl(e.target.value)} required style={styles.input} />
+                <SubirImagen value={imagenUrl} onChange={setImagenUrl} label="Imagen del personaje" />
                 <input type="text" placeholder="URL del Audio (Opcional)" value={audioUrl} onChange={(e) => setAudioUrl(e.target.value)} style={styles.input} />
                 <textarea placeholder="Descripción del personaje..." value={descripcion} onChange={(e) => setDescripcion(e.target.value)} required className="sm:col-span-2" style={{ ...styles.input, minHeight: '80px' }} />
                 <button type="submit" className="sm:col-span-2" style={styles.btnAccion}>Guardar Personaje</button>
