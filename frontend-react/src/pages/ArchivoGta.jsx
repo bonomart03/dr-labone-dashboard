@@ -6,16 +6,16 @@ import { API_URL } from '../lib/api';
 const container = { hidden: {}, show: { transition: { staggerChildren: 0.08 } } };
 const item = {
   hidden: { opacity: 0, y: 28, scale: 0.97 },
-  show:   { opacity: 1, y: 0,  scale: 1, transition: { duration: 0.4, ease: [0.25, 0.1, 0.25, 1] } },
+  show:   { opacity: 1, y: 0,  scale: 1, transition: { duration: 0.45, ease: [0.25, 0.1, 0.25, 1] } },
 };
 
 const JUEGOS = ['Todos', 'GTA San Andreas', 'GTA Vice City', 'GTA V', 'GTA IV'];
 
 const JUEGO_COLOR = {
-  'GTA San Andreas': { color: '#FB923C', bg: 'rgba(251,146,60,0.1)', border: 'rgba(251,146,60,0.35)' },
-  'GTA Vice City':   { color: '#F472B6', bg: 'rgba(244,114,182,0.1)', border: 'rgba(244,114,182,0.35)' },
-  'GTA V':           { color: '#4ADE80', bg: 'rgba(74,222,128,0.1)', border: 'rgba(74,222,128,0.35)' },
-  'GTA IV':          { color: '#94A3B8', bg: 'rgba(148,163,184,0.1)', border: 'rgba(148,163,184,0.35)' },
+  'GTA San Andreas': { color: '#FB923C', bg: 'rgba(251,146,60,0.12)', border: 'rgba(251,146,60,0.4)', glow: 'rgba(251,146,60,0.2)' },
+  'GTA Vice City':   { color: '#F472B6', bg: 'rgba(244,114,182,0.12)', border: 'rgba(244,114,182,0.4)', glow: 'rgba(244,114,182,0.2)' },
+  'GTA V':           { color: '#4ADE80', bg: 'rgba(74,222,128,0.12)', border: 'rgba(74,222,128,0.4)', glow: 'rgba(74,222,128,0.2)' },
+  'GTA IV':          { color: '#94A3B8', bg: 'rgba(148,163,184,0.12)', border: 'rgba(148,163,184,0.4)', glow: 'rgba(148,163,184,0.2)' },
 };
 
 const ArchivoGta = () => {
@@ -79,9 +79,9 @@ const ArchivoGta = () => {
               <button
                 key={juego}
                 onClick={() => setFiltro(juego)}
-                className="px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest transition-all duration-300"
+                className="px-5 py-2 rounded-full text-xs font-bold uppercase tracking-widest transition-all duration-300"
                 style={activo
-                  ? { background: c?.bg || 'rgba(234,179,8,0.12)', border: `1px solid ${c?.border || 'rgba(234,179,8,0.4)'}`, color: c?.color || '#FBBF24', boxShadow: `0 0 12px ${c?.bg || 'rgba(234,179,8,0.2)'}` }
+                  ? { background: c?.bg || 'rgba(234,179,8,0.12)', border: `1px solid ${c?.border || 'rgba(234,179,8,0.4)'}`, color: c?.color || '#FBBF24', boxShadow: `0 0 16px ${c?.glow || 'rgba(234,179,8,0.2)'}` }
                   : { background: 'transparent', border: '1px solid rgba(255,255,255,0.08)', color: '#52525B' }
                 }
               >
@@ -115,9 +115,9 @@ const ArchivoGta = () => {
         {/* Grid */}
         {!cargando && visibles.length > 0 && (
           <motion.div variants={container} initial="hidden" animate="show"
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
-            {visibles.map((r) => {
-              const jc = JUEGO_COLOR[r.juego] || { color: '#FBBF24', bg: 'rgba(234,179,8,0.1)', border: 'rgba(234,179,8,0.35)' };
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 max-w-7xl mx-auto">
+            {visibles.map((r, index) => {
+              const jc = JUEGO_COLOR[r.juego] || { color: '#FBBF24', bg: 'rgba(234,179,8,0.12)', border: 'rgba(234,179,8,0.4)', glow: 'rgba(234,179,8,0.2)' };
 
               return (
                 <motion.div
@@ -125,82 +125,114 @@ const ArchivoGta = () => {
                   variants={item}
                   className="group relative flex flex-col rounded-2xl overflow-hidden"
                   style={{
-                    background: 'rgba(24,24,27,0.6)',
-                    backdropFilter: 'blur(12px)',
-                    border: '1px solid rgba(255,255,255,0.06)',
-                    boxShadow: '0 4px 20px rgba(0,0,0,0.4)',
+                    background: 'rgba(13,13,18,0.98)',
+                    border: '1px solid rgba(255,255,255,0.07)',
+                    boxShadow: '0 4px 24px rgba(0,0,0,0.5)',
+                    transition: 'all 0.4s cubic-bezier(0.25, 0.1, 0.25, 1)',
                   }}
                   onMouseEnter={e => {
-                    e.currentTarget.style.transform = 'translateY(-6px) scale(1.01)';
+                    e.currentTarget.style.transform = 'translateY(-8px)';
                     e.currentTarget.style.borderColor = jc.border;
-                    e.currentTarget.style.boxShadow = `0 20px 40px rgba(0,0,0,0.5), 0 0 25px ${jc.bg}`;
+                    e.currentTarget.style.boxShadow = `0 28px 60px rgba(0,0,0,0.7), 0 0 40px ${jc.glow}`;
                   }}
                   onMouseLeave={e => {
-                    e.currentTarget.style.transform = 'translateY(0) scale(1)';
-                    e.currentTarget.style.borderColor = 'rgba(255,255,255,0.06)';
-                    e.currentTarget.style.boxShadow = '0 4px 20px rgba(0,0,0,0.4)';
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.borderColor = 'rgba(255,255,255,0.07)';
+                    e.currentTarget.style.boxShadow = '0 4px 24px rgba(0,0,0,0.5)';
                   }}
                 >
-                  {/* Top glow line */}
-                  <div className="absolute top-0 left-0 w-full h-[1px] opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20"
-                    style={{ background: `linear-gradient(90deg, transparent, ${jc.color}, transparent)` }} />
-
-                  {/* Imagen */}
-                  <div className="relative h-48 overflow-hidden bg-zinc-950 flex-shrink-0">
+                  {/* ── IMAGEN ── */}
+                  <div className="relative h-56 overflow-hidden flex-shrink-0">
                     <img
-                      src={r.imagenUrl || `https://via.placeholder.com/400x200/0a0a0f/1a1a2e?text=${encodeURIComponent(r.juego || 'GTA')}`}
+                      src={r.imagenUrl || `https://via.placeholder.com/400x220/0a0a0f/1a1a2e?text=${encodeURIComponent(r.juego || 'GTA')}`}
                       alt={r.titulo}
-                      className="w-full h-full object-cover transition-all duration-700 opacity-75 group-hover:opacity-100 group-hover:scale-105"
+                      className="w-full h-full object-cover transition-transform duration-700"
+                      style={{ transform: 'scale(1.04)' }}
+                      onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.1)'; }}
+                      onMouseLeave={e => { e.currentTarget.style.transform = 'scale(1.04)'; }}
                     />
-                    {/* Gradiente sobre la imagen */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#18181b] via-[#18181b]/30 to-transparent" />
 
-                    {/* Badges en la imagen */}
-                    <div className="absolute bottom-3 left-3 right-3 flex justify-between items-end z-10">
-                      <span
-                        className="text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full"
-                        style={{ background: jc.bg, border: `1px solid ${jc.border}`, color: jc.color, backdropFilter: 'blur(8px)' }}
-                      >
-                        {r.juego}
-                      </span>
-                      {r.categoria && (
-                        <span className="text-[9px] font-bold uppercase tracking-widest px-2.5 py-1.5 rounded-full"
-                          style={{ background: 'rgba(0,0,0,0.6)', border: '1px solid rgba(255,255,255,0.1)', color: '#71717A', backdropFilter: 'blur(8px)' }}>
-                          {r.categoria}
-                        </span>
-                      )}
+                    {/* Gradiente inferior */}
+                    <div className="absolute inset-0"
+                      style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0.05) 0%, rgba(13,13,18,0.5) 50%, rgba(13,13,18,0.98) 100%)' }} />
+
+                    {/* Línea de color superior */}
+                    <div className="absolute top-0 left-0 w-full h-[3px]"
+                      style={{ background: `linear-gradient(90deg, transparent 0%, ${jc.color} 50%, transparent 100%)`, opacity: 0.8 }} />
+
+                    {/* Número de expediente */}
+                    <span className="absolute top-4 left-4 text-[11px] font-black tracking-[0.35em] z-10"
+                      style={{ color: 'rgba(255,255,255,0.18)' }}>
+                      EXP·{String(index + 1).padStart(2, '0')}
+                    </span>
+
+                    {/* Badge del juego */}
+                    <span
+                      className="absolute top-3.5 right-3.5 text-[9px] font-black uppercase px-3 py-1.5 rounded-full tracking-widest z-10"
+                      style={{ background: 'rgba(5,5,8,0.88)', border: `1px solid ${jc.border}`, color: jc.color, backdropFilter: 'blur(10px)' }}
+                    >
+                      {r.juego.replace('GTA ', '')}
+                    </span>
+
+                    {/* Título sobre la imagen */}
+                    <div className="absolute bottom-0 left-0 right-0 px-5 pb-5 z-10">
+                      <h3 className="text-xl font-black text-white leading-tight tracking-wide transition-colors duration-300 group-hover:text-yellow-300"
+                        style={{ textShadow: '0 2px 16px rgba(0,0,0,0.9)' }}>
+                        {r.titulo}
+                      </h3>
+                      <div className="mt-2 h-[2px] w-10 transition-all duration-500 group-hover:w-20"
+                        style={{ background: `linear-gradient(90deg, ${jc.color}, transparent)` }} />
                     </div>
                   </div>
 
-                  {/* Contenido */}
-                  <div className="p-5 flex flex-col flex-grow">
-                    <h3 className="text-base font-extrabold text-zinc-100 mb-2 group-hover:text-yellow-400 transition-colors duration-300 leading-snug">
-                      {r.titulo}
-                    </h3>
-                    <p className="text-zinc-500 text-xs font-light leading-relaxed flex-grow mb-5">
+                  {/* ── CONTENIDO ── */}
+                  <div className="flex flex-col flex-grow px-5 pt-4 pb-5">
+
+                    {/* Categoría */}
+                    {r.categoria && (
+                      <div className="flex items-center gap-2 mb-3">
+                        <div className="w-1 h-4 rounded-full" style={{ background: jc.color, opacity: 0.6 }} />
+                        <span className="text-xs font-bold uppercase tracking-widest" style={{ color: jc.color + 'aa' }}>
+                          {r.categoria}
+                        </span>
+                      </div>
+                    )}
+
+                    {/* Descripción */}
+                    <p className="text-zinc-400 text-sm leading-relaxed flex-grow mb-5">
                       {r.descripcion}
                     </p>
 
+                    {/* Separador */}
+                    {r.videoUrl && (
+                      <div className="mb-4 h-[1px]" style={{ background: 'rgba(255,255,255,0.05)' }} />
+                    )}
+
+                    {/* Botón ver evidencia */}
                     {r.videoUrl && (
                       <a
                         href={r.videoUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-[0.2em] transition-all duration-300"
-                        style={{ background: jc.bg, border: `1px solid ${jc.border}`, color: jc.color }}
+                        className="flex items-center justify-center gap-2.5 w-full py-3 rounded-xl text-xs font-black uppercase tracking-[0.2em] transition-all duration-300"
+                        style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', color: '#71717A' }}
                         onMouseEnter={e => {
-                          e.currentTarget.style.background = jc.bg.replace('0.1', '0.2');
-                          e.currentTarget.style.boxShadow = `0 0 14px ${jc.bg}`;
+                          e.currentTarget.style.background = jc.bg;
+                          e.currentTarget.style.borderColor = jc.border;
+                          e.currentTarget.style.color = jc.color;
+                          e.currentTarget.style.boxShadow = `0 0 16px ${jc.glow}`;
                         }}
                         onMouseLeave={e => {
-                          e.currentTarget.style.background = jc.bg;
+                          e.currentTarget.style.background = 'rgba(255,255,255,0.04)';
+                          e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)';
+                          e.currentTarget.style.color = '#71717A';
                           e.currentTarget.style.boxShadow = 'none';
                         }}
                       >
-                        <svg viewBox="0 0 24 24" fill="currentColor" className="w-3 h-3 flex-shrink-0">
+                        <svg viewBox="0 0 24 24" fill="currentColor" className="w-3.5 h-3.5 flex-shrink-0">
                           <path d="M8 5v14l11-7z"/>
                         </svg>
-                        Ver Evidencia
+                        Ver Evidencia en Video
                       </a>
                     )}
                   </div>

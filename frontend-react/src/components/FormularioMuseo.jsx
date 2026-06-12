@@ -7,8 +7,7 @@ import SubirImagen from './SubirImagen';
 const FormularioMuseo = ({ alTerminar, itemEditar }) => {
     const [nombre, setNombre] = useState('');
     const [anio, setAnio] = useState('');
-    const [imagenAntesUrl, setImagenAntesUrl] = useState('');
-    const [imagenDespuesUrl, setImagenDespuesUrl] = useState('');
+    const [imagenUrl, setImagenUrl] = useState('');
     const [descripcion, setDescripcion] = useState('');
 
     const editando = !!itemEditar;
@@ -17,15 +16,14 @@ const FormularioMuseo = ({ alTerminar, itemEditar }) => {
         if (itemEditar) {
             setNombre(itemEditar.nombre || '');
             setAnio(itemEditar.anio || '');
-            setImagenAntesUrl(itemEditar.imagenAntesUrl || '');
-            setImagenDespuesUrl(itemEditar.imagenDespuesUrl || '');
+            setImagenUrl(itemEditar.imagenAntesUrl || itemEditar.imagenUrl || '');
             setDescripcion(itemEditar.descripcion || '');
         }
     }, [itemEditar]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const datos = { nombre, anio: parseInt(anio), imagenAntesUrl, imagenDespuesUrl, descripcion };
+        const datos = { nombre, anio: parseInt(anio), imagenAntesUrl: imagenUrl, imagenDespuesUrl: imagenUrl, descripcion };
         const config = { headers: { 'Authorization': localStorage.getItem('dr_labone_token') } };
 
         try {
@@ -36,7 +34,7 @@ const FormularioMuseo = ({ alTerminar, itemEditar }) => {
                 await axios.post(`${API_URL}/api/museo`, datos, config);
                 toast.success('¡Proyecto del Museo guardado!');
             }
-            setNombre(''); setAnio(''); setImagenAntesUrl(''); setImagenDespuesUrl(''); setDescripcion('');
+            setNombre(''); setAnio(''); setImagenUrl(''); setDescripcion('');
             alTerminar();
         } catch (error) {
             toast.error('Error al guardar el proyecto.');
@@ -51,8 +49,9 @@ const FormularioMuseo = ({ alTerminar, itemEditar }) => {
             <form onSubmit={handleSubmit} className="grid gap-[10px] grid-cols-1 sm:grid-cols-2">
                 <input type="text" placeholder="Nombre del Objeto / Proyecto" value={nombre} onChange={(e) => setNombre(e.target.value)} required style={styles.input} />
                 <input type="number" placeholder="Año del Modelo / Proyecto" value={anio} onChange={(e) => setAnio(e.target.value)} required style={styles.input} />
-                <SubirImagen value={imagenAntesUrl} onChange={setImagenAntesUrl} label="Imagen: Antes 📸" />
-                <SubirImagen value={imagenDespuesUrl} onChange={setImagenDespuesUrl} label="Imagen: Después ✨" />
+                <div className="sm:col-span-2">
+                    <SubirImagen value={imagenUrl} onChange={setImagenUrl} label="Imagen del proyecto 📸" />
+                </div>
                 <textarea placeholder="Detalles de la restauración..." value={descripcion} onChange={(e) => setDescripcion(e.target.value)} required className="sm:col-span-2" style={{ ...styles.input, minHeight: '80px' }} />
                 <button type="submit" className="sm:col-span-2" style={editando ? styles.btnEditar : styles.btnAccion}>
                     {editando ? 'Actualizar Proyecto' : 'Guardar en Museo'}

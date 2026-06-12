@@ -8,16 +8,16 @@ const container = {
   show: { transition: { staggerChildren: 0.07 } },
 };
 const item = {
-  hidden: { opacity: 0, y: 24, scale: 0.96 },
-  show:   { opacity: 1, y: 0,  scale: 1, transition: { duration: 0.4, ease: [0.25, 0.1, 0.25, 1] } },
+  hidden: { opacity: 0, y: 28, scale: 0.97 },
+  show:   { opacity: 1, y: 0,  scale: 1, transition: { duration: 0.45, ease: [0.25, 0.1, 0.25, 1] } },
 };
 
 const TIPOS = ['Todos', 'TRIBUTO', 'MUÑECO', 'MASCOTA'];
 
 const TIPO_COLOR = {
-  TRIBUTO: { bg: 'rgba(234,179,8,0.12)', border: 'rgba(234,179,8,0.4)', text: '#FBBF24' },
-  MUÑECO:  { bg: 'rgba(139,92,246,0.12)', border: 'rgba(139,92,246,0.4)', text: '#A78BFA' },
-  MASCOTA: { bg: 'rgba(20,184,166,0.12)', border: 'rgba(20,184,166,0.4)', text: '#2DD4BF' },
+  TRIBUTO: { bg: 'rgba(234,179,8,0.12)', border: 'rgba(234,179,8,0.4)', text: '#FBBF24', glow: 'rgba(234,179,8,0.2)' },
+  MUÑECO:  { bg: 'rgba(139,92,246,0.12)', border: 'rgba(139,92,246,0.4)', text: '#A78BFA', glow: 'rgba(139,92,246,0.2)' },
+  MASCOTA: { bg: 'rgba(20,184,166,0.12)', border: 'rgba(20,184,166,0.4)', text: '#2DD4BF', glow: 'rgba(20,184,166,0.2)' },
 };
 
 const Multiverso = () => {
@@ -95,9 +95,9 @@ const Multiverso = () => {
               <button
                 key={tipo}
                 onClick={() => setFiltro(tipo)}
-                className="px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest transition-all duration-300"
+                className="px-5 py-2 rounded-full text-xs font-bold uppercase tracking-widest transition-all duration-300"
                 style={activo
-                  ? { background: c?.bg || 'rgba(234,179,8,0.15)', border: `1px solid ${c?.border || 'rgba(234,179,8,0.5)'}`, color: c?.text || '#FBBF24', boxShadow: `0 0 12px ${c?.border || 'rgba(234,179,8,0.3)'}` }
+                  ? { background: c?.bg || 'rgba(234,179,8,0.15)', border: `1px solid ${c?.border || 'rgba(234,179,8,0.5)'}`, color: c?.text || '#FBBF24', boxShadow: `0 0 16px ${c?.glow || 'rgba(234,179,8,0.3)'}` }
                   : { background: 'transparent', border: '1px solid rgba(255,255,255,0.08)', color: '#52525B' }
                 }
               >
@@ -132,12 +132,12 @@ const Multiverso = () => {
         {!cargando && visibles.length > 0 && (
           <motion.div
             variants={container} initial="hidden" animate="show"
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7 max-w-7xl mx-auto"
           >
             {visibles.map((p, index) => {
               const tc = TIPO_COLOR[p.tipo] || TIPO_COLOR.TRIBUTO;
               const expandido = expandidos[p.id];
-              const descripcionLarga = p.descripcion?.length > 110;
+              const descripcionLarga = p.descripcion?.length > 150;
 
               return (
                 <motion.div
@@ -145,15 +145,15 @@ const Multiverso = () => {
                   variants={item}
                   className="group relative flex flex-col rounded-2xl overflow-hidden"
                   style={{
-                    background: 'rgba(13,13,18,0.95)',
+                    background: 'rgba(13,13,18,0.98)',
                     border: '1px solid rgba(255,255,255,0.07)',
                     boxShadow: '0 4px 24px rgba(0,0,0,0.5)',
                     transition: 'all 0.4s cubic-bezier(0.25, 0.1, 0.25, 1)',
                   }}
                   onMouseEnter={e => {
-                    e.currentTarget.style.transform = 'translateY(-6px)';
+                    e.currentTarget.style.transform = 'translateY(-8px)';
                     e.currentTarget.style.borderColor = tc.border;
-                    e.currentTarget.style.boxShadow = `0 24px 50px rgba(0,0,0,0.6), 0 0 40px ${tc.bg.replace('0.12','0.18')}`;
+                    e.currentTarget.style.boxShadow = `0 28px 60px rgba(0,0,0,0.7), 0 0 40px ${tc.glow}`;
                   }}
                   onMouseLeave={e => {
                     e.currentTarget.style.transform = 'translateY(0)';
@@ -162,99 +162,107 @@ const Multiverso = () => {
                   }}
                 >
                   {/* ── IMAGEN ── */}
-                  <div className="relative h-56 overflow-hidden flex-shrink-0">
+                  <div className="relative h-64 overflow-hidden flex-shrink-0">
 
-                    {/* Foto del personaje */}
                     <img
                       src={p.imagenUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(p.nombre)}&background=0d0d12&color=52525b&size=400&bold=true&font-size=0.4`}
                       alt={p.nombre}
-                      className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                      className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-108"
+                      style={{ transform: 'scale(1.02)' }}
                     />
 
-                    {/* Gradiente inferior — funde imagen con el card */}
+                    {/* Gradiente inferior */}
                     <div className="absolute inset-0"
-                      style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(13,13,18,0.5) 50%, rgba(13,13,18,0.97) 100%)' }} />
+                      style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0.05) 0%, rgba(13,13,18,0.4) 40%, rgba(13,13,18,0.98) 100%)' }} />
 
                     {/* Línea de color superior */}
-                    <div className="absolute top-0 left-0 w-full h-[2px] transition-opacity duration-500 opacity-60 group-hover:opacity-100"
-                      style={{ background: `linear-gradient(90deg, transparent, ${tc.text}, transparent)` }} />
+                    <div className="absolute top-0 left-0 w-full h-[3px]"
+                      style={{ background: `linear-gradient(90deg, transparent 0%, ${tc.text} 50%, transparent 100%)`, opacity: 0.7 }} />
 
                     {/* Número de registro */}
-                    <span className="absolute top-3.5 left-4 text-[10px] font-black tracking-[0.3em] z-10"
-                      style={{ color: 'rgba(255,255,255,0.2)' }}>
+                    <span className="absolute top-4 left-4 text-[11px] font-black tracking-[0.35em] z-10"
+                      style={{ color: 'rgba(255,255,255,0.18)' }}>
                       {String(index + 1).padStart(2, '0')}
                     </span>
 
                     {/* Badge de tipo */}
                     <span
-                      className="absolute top-3 right-3 text-[9px] font-black uppercase px-2.5 py-1 rounded-full tracking-widest z-10"
-                      style={{ background: 'rgba(5,5,8,0.85)', border: `1px solid ${tc.border}`, color: tc.text, backdropFilter: 'blur(8px)' }}
+                      className="absolute top-3.5 right-3.5 text-[9px] font-black uppercase px-3 py-1.5 rounded-full tracking-widest z-10"
+                      style={{ background: 'rgba(5,5,8,0.88)', border: `1px solid ${tc.border}`, color: tc.text, backdropFilter: 'blur(10px)' }}
                     >
                       {p.tipo}
                     </span>
 
-                    {/* Nombre sobre la imagen (parte baja) */}
-                    <div className="absolute bottom-0 left-0 right-0 px-5 pb-4 z-10">
-                      <h3 className="text-xl font-black text-white leading-tight tracking-wide transition-colors duration-300 group-hover:text-yellow-300"
-                        style={{ textShadow: '0 2px 12px rgba(0,0,0,0.8)' }}>
+                    {/* Nombre sobre la imagen */}
+                    <div className="absolute bottom-0 left-0 right-0 px-5 pb-5 z-10">
+                      <h3 className="text-2xl font-black text-white leading-tight tracking-wide transition-colors duration-300 group-hover:text-yellow-300"
+                        style={{ textShadow: '0 2px 16px rgba(0,0,0,0.9)' }}>
                         {p.nombre}
                       </h3>
-                      {/* Línea de acento bajo el nombre */}
-                      <div className="mt-1.5 h-[1px] w-8 transition-all duration-500 group-hover:w-16"
+                      <div className="mt-2 h-[2px] w-10 transition-all duration-500 group-hover:w-20"
                         style={{ background: `linear-gradient(90deg, ${tc.text}, transparent)` }} />
                     </div>
                   </div>
 
                   {/* ── CONTENIDO ── */}
-                  <div className="flex flex-col flex-grow px-5 py-4">
+                  <div className="flex flex-col flex-grow px-5 pt-5 pb-5">
 
                     {/* Descripción */}
                     <div className="flex-grow">
-                      <p className="text-zinc-500 text-xs leading-relaxed font-light">
+                      <p className="text-zinc-400 text-sm leading-relaxed">
                         {descripcionLarga && !expandido
-                          ? p.descripcion.slice(0, 110) + '…'
+                          ? p.descripcion.slice(0, 150) + '…'
                           : p.descripcion}
                       </p>
                       {descripcionLarga && (
                         <button
                           onClick={() => toggleExpand(p.id)}
-                          className="text-[10px] font-bold uppercase tracking-widest mt-2 transition-colors duration-200"
-                          style={{ color: tc.text + '70' }}
+                          className="text-[11px] font-bold uppercase tracking-widest mt-3 transition-colors duration-200"
+                          style={{ color: tc.text + '80' }}
                           onMouseEnter={e => { e.currentTarget.style.color = tc.text; }}
-                          onMouseLeave={e => { e.currentTarget.style.color = tc.text + '70'; }}
+                          onMouseLeave={e => { e.currentTarget.style.color = tc.text + '80'; }}
                         >
-                          {expandido ? 'Ver menos ↑' : 'Ver más ↓'}
+                          {expandido ? '↑ Ver menos' : '↓ Ver más'}
                         </button>
                       )}
                     </div>
+
+                    {/* Separador */}
+                    {p.audioEasterEggUrl && (
+                      <div className="mt-4 mb-4 h-[1px]" style={{ background: 'rgba(255,255,255,0.05)' }} />
+                    )}
 
                     {/* Audio Easter Egg */}
                     {p.audioEasterEggUrl && (
                       <button
                         onClick={() => reproducirAudio(p.audioEasterEggUrl, p.id)}
                         disabled={reproduciendo === p.id}
-                        className="mt-4 w-full py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-[0.2em] transition-all duration-300 flex items-center justify-center gap-2"
+                        className="w-full py-3 rounded-xl text-xs font-black uppercase tracking-[0.2em] transition-all duration-300 flex items-center justify-center gap-2.5"
                         style={{
-                          background: reproduciendo === p.id ? tc.bg.replace('0.12', '0.22') : tc.bg,
-                          border: `1px solid ${reproduciendo === p.id ? tc.border.replace('0.4', '0.8') : tc.border}`,
-                          color: tc.text,
-                          boxShadow: reproduciendo === p.id ? `0 0 18px ${tc.bg.replace('0.12', '0.35')}` : 'none',
+                          background: reproduciendo === p.id ? tc.bg.replace('0.12', '0.25') : 'rgba(255,255,255,0.04)',
+                          border: `1px solid ${reproduciendo === p.id ? tc.border : 'rgba(255,255,255,0.1)'}`,
+                          color: reproduciendo === p.id ? tc.text : '#71717A',
+                          boxShadow: reproduciendo === p.id ? `0 0 20px ${tc.glow}` : 'none',
                           cursor: reproduciendo === p.id ? 'default' : 'pointer',
                         }}
                         onMouseEnter={e => {
                           if (reproduciendo === p.id) return;
-                          e.currentTarget.style.background = tc.bg.replace('0.12', '0.22');
-                          e.currentTarget.style.boxShadow = `0 0 14px ${tc.bg}`;
+                          e.currentTarget.style.background = tc.bg;
+                          e.currentTarget.style.borderColor = tc.border;
+                          e.currentTarget.style.color = tc.text;
+                          e.currentTarget.style.boxShadow = `0 0 14px ${tc.glow}`;
                         }}
                         onMouseLeave={e => {
                           if (reproduciendo === p.id) return;
-                          e.currentTarget.style.background = tc.bg;
+                          e.currentTarget.style.background = 'rgba(255,255,255,0.04)';
+                          e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)';
+                          e.currentTarget.style.color = '#71717A';
                           e.currentTarget.style.boxShadow = 'none';
                         }}
                       >
                         {reproduciendo === p.id ? (
                           <>
-                            <span className="flex items-end gap-[3px] h-3">
+                            <span className="flex items-end gap-[3px] h-3.5">
                               {[1, 3, 2, 4, 2].map((h, i) => (
                                 <span key={i} className="w-[3px] rounded-full animate-bounce"
                                   style={{ height: `${h * 3}px`, background: tc.text, animationDelay: `${i * 0.1}s`, animationDuration: '0.6s' }} />
@@ -264,7 +272,7 @@ const Multiverso = () => {
                           </>
                         ) : (
                           <>
-                            <svg viewBox="0 0 24 24" fill="currentColor" className="w-3 h-3">
+                            <svg viewBox="0 0 24 24" fill="currentColor" className="w-3.5 h-3.5">
                               <path d="M8 5v14l11-7z"/>
                             </svg>
                             Easter Egg

@@ -12,6 +12,7 @@ const item = {
 const Museo = () => {
   const [proyectos, setProyectos] = useState([]);
   const [cargando, setCargando] = useState(true);
+  const [expandidos, setExpandidos] = useState({});
 
   useEffect(() => { document.title = 'Museo — Dr. Labone'; }, []);
 
@@ -21,6 +22,9 @@ const Museo = () => {
       .catch(e => console.error(e))
       .finally(() => setCargando(false));
   }, []);
+
+  const toggleExpand = (id) =>
+    setExpandidos(prev => ({ ...prev, [id]: !prev[id] }));
 
   return (
     <div className="min-h-screen bg-zinc-950 relative overflow-hidden">
@@ -81,98 +85,106 @@ const Museo = () => {
         {!cargando && proyectos.length > 0 && (
           <motion.div variants={container} initial="hidden" animate="show"
             className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-7xl mx-auto">
-            {proyectos.map((p, i) => (
-              <motion.div
-                key={p.id}
-                variants={item}
-                className="group relative rounded-2xl overflow-hidden"
-                style={{
-                  background: 'rgba(24,24,27,0.6)',
-                  backdropFilter: 'blur(12px)',
-                  border: '1px solid rgba(255,255,255,0.06)',
-                  boxShadow: '0 4px 20px rgba(0,0,0,0.4)',
-                }}
-                onMouseEnter={e => {
-                  e.currentTarget.style.transform = 'translateY(-6px)';
-                  e.currentTarget.style.borderColor = 'rgba(234,179,8,0.3)';
-                  e.currentTarget.style.boxShadow = '0 20px 50px rgba(0,0,0,0.6), 0 0 30px rgba(234,179,8,0.08)';
-                }}
-                onMouseLeave={e => {
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.06)';
-                  e.currentTarget.style.boxShadow = '0 4px 20px rgba(0,0,0,0.4)';
-                }}
-              >
-                {/* Top glow line */}
-                <div className="absolute top-0 left-0 w-full h-[1px] opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20"
-                  style={{ background: 'linear-gradient(90deg, transparent, rgba(234,179,8,0.6), transparent)' }} />
+            {proyectos.map((p, i) => {
+              const expandido = expandidos[p.id];
+              const descripcionLarga = p.descripcion?.length > 160;
+              const imagen = p.imagenAntesUrl || p.imagenUrl;
 
-                {/* Número de proyecto */}
-                <div className="absolute top-4 left-4 z-30">
-                  <span className="text-[10px] font-black text-zinc-600 tracking-widest">
-                    {String(i + 1).padStart(2, '0')}
-                  </span>
-                </div>
-
-                {/* Imágenes Antes / Después */}
-                <div className="flex flex-col xs:flex-row sm:flex-row" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-
-                  {/* Antes */}
-                  <div className="relative w-full sm:w-1/2 h-44 sm:h-56 overflow-hidden bg-zinc-950">
+              return (
+                <motion.div
+                  key={p.id}
+                  variants={item}
+                  className="group relative flex flex-col rounded-2xl overflow-hidden"
+                  style={{
+                    background: 'rgba(13,13,18,0.98)',
+                    border: '1px solid rgba(255,255,255,0.07)',
+                    boxShadow: '0 4px 24px rgba(0,0,0,0.5)',
+                    transition: 'all 0.4s cubic-bezier(0.25, 0.1, 0.25, 1)',
+                  }}
+                  onMouseEnter={e => {
+                    e.currentTarget.style.transform = 'translateY(-8px)';
+                    e.currentTarget.style.borderColor = 'rgba(20,184,166,0.4)';
+                    e.currentTarget.style.boxShadow = '0 28px 60px rgba(0,0,0,0.7), 0 0 40px rgba(20,184,166,0.15)';
+                  }}
+                  onMouseLeave={e => {
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.borderColor = 'rgba(255,255,255,0.07)';
+                    e.currentTarget.style.boxShadow = '0 4px 24px rgba(0,0,0,0.5)';
+                  }}
+                >
+                  {/* ── IMAGEN ── */}
+                  <div className="relative h-64 overflow-hidden flex-shrink-0">
                     <img
-                      src={p.imagenAntesUrl || 'https://via.placeholder.com/300x300/111111/333333?text=Antes'}
-                      alt={`Antes — ${p.nombre}`}
-                      className="w-full h-full object-cover transition-all duration-700 grayscale group-hover:grayscale-0 opacity-60 group-hover:opacity-80 scale-100 group-hover:scale-105"
+                      src={imagen || 'https://via.placeholder.com/600x300/0d0d12/1a1a2e?text=Restauracion'}
+                      alt={p.nombre}
+                      className="w-full h-full object-cover transition-transform duration-700"
+                      style={{ transform: 'scale(1.04)' }}
                     />
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent to-zinc-950/60" />
-                    <span className="absolute bottom-3 left-3 text-[9px] font-black uppercase tracking-[0.2em] px-2.5 py-1 rounded-full"
-                      style={{ background: 'rgba(0,0,0,0.75)', border: '1px solid rgba(255,255,255,0.12)', color: '#71717A', backdropFilter: 'blur(4px)' }}>
-                      Antes
-                    </span>
-                  </div>
 
-                  {/* Divisor central */}
-                  <div className="hidden sm:flex relative w-[2px] flex-shrink-0 bg-zinc-800 items-center justify-center z-10">
-                    <div className="w-7 h-7 rounded-full flex items-center justify-center"
-                      style={{ background: 'rgba(10,10,15,0.95)', border: '1px solid rgba(234,179,8,0.3)' }}>
-                      <svg viewBox="0 0 24 24" fill="none" stroke="#FBBF24" strokeWidth="2" className="w-3.5 h-3.5">
-                        <path d="M5 12h14M12 5l7 7-7 7"/>
-                      </svg>
+                    {/* Gradiente inferior */}
+                    <div className="absolute inset-0"
+                      style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0.05) 0%, rgba(13,13,18,0.4) 40%, rgba(13,13,18,0.98) 100%)' }} />
+
+                    {/* Línea de color superior — teal */}
+                    <div className="absolute top-0 left-0 w-full h-[3px]"
+                      style={{ background: 'linear-gradient(90deg, transparent 0%, #14B8A6 50%, transparent 100%)', opacity: 0.7 }} />
+
+                    {/* Número de proyecto */}
+                    <span className="absolute top-4 left-4 text-[11px] font-black tracking-[0.35em] z-10"
+                      style={{ color: 'rgba(255,255,255,0.18)' }}>
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+
+                    {/* Badge de año */}
+                    <span className="absolute top-3.5 right-3.5 text-[10px] font-black tracking-widest px-3 py-1.5 rounded-full z-10"
+                      style={{ background: 'rgba(5,5,8,0.88)', border: '1px solid rgba(20,184,166,0.4)', color: '#2DD4BF', backdropFilter: 'blur(10px)' }}>
+                      {p.anio}
+                    </span>
+
+                    {/* Nombre sobre la imagen */}
+                    <div className="absolute bottom-0 left-0 right-0 px-6 pb-5 z-10">
+                      <h3 className="text-2xl font-black text-white leading-tight tracking-wide transition-colors duration-300 group-hover:text-teal-300"
+                        style={{ textShadow: '0 2px 16px rgba(0,0,0,0.9)' }}>
+                        {p.nombre}
+                      </h3>
+                      <div className="mt-2 h-[2px] w-10 transition-all duration-500 group-hover:w-20"
+                        style={{ background: 'linear-gradient(90deg, #14B8A6, transparent)' }} />
                     </div>
                   </div>
 
-                  {/* Después */}
-                  <div className="relative w-full sm:w-1/2 h-44 sm:h-56 overflow-hidden bg-zinc-950">
-                    <img
-                      src={p.imagenDespuesUrl || 'https://via.placeholder.com/300x300/111111/333333?text=Despu%C3%A9s'}
-                      alt={`Después — ${p.nombre}`}
-                      className="w-full h-full object-cover transition-all duration-700 opacity-85 group-hover:opacity-100 scale-100 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-l from-transparent to-zinc-950/30" />
-                    <span className="absolute bottom-3 right-3 text-[9px] font-black uppercase tracking-[0.2em] px-2.5 py-1 rounded-full"
-                      style={{ background: 'rgba(0,0,0,0.75)', border: '1px solid rgba(234,179,8,0.4)', color: '#FBBF24', backdropFilter: 'blur(4px)' }}>
-                      Después
-                    </span>
-                  </div>
-                </div>
+                  {/* ── CONTENIDO ── */}
+                  <div className="px-6 pt-5 pb-6 flex flex-col flex-grow">
 
-                {/* Info */}
-                <div className="p-6">
-                  <div className="flex justify-between items-start mb-3">
-                    <h3 className="text-lg md:text-xl font-extrabold text-zinc-100 group-hover:text-yellow-400 transition-colors duration-300 leading-tight pr-3">
-                      {p.nombre}
-                    </h3>
-                    <span className="flex-shrink-0 text-xs font-black font-mono px-3 py-1 rounded-lg"
-                      style={{ background: 'rgba(234,179,8,0.08)', border: '1px solid rgba(234,179,8,0.25)', color: '#D97706' }}>
-                      {p.anio}
-                    </span>
+                    {/* Badge "Restauración" */}
+                    <div className="flex items-center gap-2 mb-4">
+                      <div className="w-1 h-4 rounded-full" style={{ background: '#14B8A6', opacity: 0.5 }} />
+                      <span className="text-xs font-bold uppercase tracking-widest" style={{ color: 'rgba(20,184,166,0.55)' }}>
+                        Proyecto de restauración
+                      </span>
+                    </div>
+
+                    {/* Descripción */}
+                    <p className="text-zinc-400 text-sm leading-relaxed flex-grow">
+                      {descripcionLarga && !expandido
+                        ? p.descripcion.slice(0, 160) + '…'
+                        : p.descripcion}
+                    </p>
+
+                    {descripcionLarga && (
+                      <button
+                        onClick={() => toggleExpand(p.id)}
+                        className="text-[11px] font-bold uppercase tracking-widest mt-3 self-start transition-colors duration-200"
+                        style={{ color: 'rgba(20,184,166,0.5)' }}
+                        onMouseEnter={e => { e.currentTarget.style.color = '#14B8A6'; }}
+                        onMouseLeave={e => { e.currentTarget.style.color = 'rgba(20,184,166,0.5)'; }}
+                      >
+                        {expandido ? '↑ Ver menos' : '↓ Ver más'}
+                      </button>
+                    )}
                   </div>
-                  <p className="text-zinc-500 text-sm font-light leading-relaxed">
-                    {p.descripcion}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
+                </motion.div>
+              );
+            })}
           </motion.div>
         )}
       </div>
